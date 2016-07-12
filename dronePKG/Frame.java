@@ -17,9 +17,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Scanner;
 
 import javax.swing.SwingConstants;
@@ -81,14 +83,17 @@ public class Frame extends JFrame {
 	public Frame() throws IOException {
 		//Reads in the background image and creates a background panel
 		//Background panel is a child of jpanel
-        BufferedImage img = null;
-        try {
-             File f = new File("niceDroneVector.jpg");
-             img = ImageIO.read(f);
-             System.out.println("File " + f.toString());
-        } catch (Exception e) {
-            System.out.println("Cannot read file: " + e);
-        }
+//        BufferedImage img = null;
+//        try {
+//            File f = new File(IOUtils.toString(classLoader.getResourceAsStream("/res/niceDroneVector")));
+//             img = ImageIO.read(f);
+//             System.out.println("File " + f.toString());
+//        } catch (Exception e) {
+//            System.out.println("Cannot read file: " + e);
+//        }
+		
+        URL imageurl = getClass().getResource("/resource/niceDroneVector.jpg");//assuming your package name is vector 
+        Image img = Toolkit.getDefaultToolkit().getImage(imageurl);
          
         BackgroundPanel background = new BackgroundPanel(img);
 
