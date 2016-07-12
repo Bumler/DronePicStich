@@ -1,14 +1,14 @@
 package dronePKG;
 
-import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,25 +16,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ImageDisplay extends JFrame {
 
 	private JPanel contentPane;
 
-	private static File f = null;
-	private static int rows;
+	private File f = null;
+	private int rows;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void makeWindow(){
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					ImageDisplay frame = new ImageDisplay(f,rows);
 					frame.setVisible(true);
 					frame.setSize(1600, 1000);
+					getScreenShot(frame);
+					BufferedImage img = ScreenImage.createImage(contentPane);
+					System.out.println(f);
+					String fileLocation = new String (f+"\\stich.jpg");
+					ScreenImage.writeImage(img, fileLocation);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,8 +47,9 @@ public class ImageDisplay extends JFrame {
 	}
 
 	public void view(){
-		main(null);
+		makeWindow();
 	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -59,6 +64,16 @@ public class ImageDisplay extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(rows, 1, 0, 0));
 		
+//		JButton btnNewButton = new JButton("Ima button");
+//		contentPane.add(btnNewButton);
+//		BufferedImage imgur = ScreenImage.createImage(btnNewButton);
+//		try {
+//			ScreenImage.writeImage(imgur, "test.png");
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+	
 		if (f != null){
 			
 			ArrayList<File> images = new ArrayList<File>(Arrays.asList(f.listFiles()));
@@ -88,6 +103,7 @@ public class ImageDisplay extends JFrame {
 					contentPane.add(grid[i][j]);
 				}
 			}
+			
 		}
 	}
 	
@@ -169,4 +185,17 @@ public class ImageDisplay extends JFrame {
         	
         }
 	}
+	
+	//taken from http://stackoverflow.com/questions/5853879/swing-obtain-image-of-jframe
+	private void getScreenShot(Component component) {
+	    BufferedImage image = new BufferedImage(component.getWidth(),
+	    		component.getHeight(),
+	    		BufferedImage.TYPE_INT_RGB);
+	    try {
+			ImageIO.write(image, "PNG", new File("stitch.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	  }
 }
