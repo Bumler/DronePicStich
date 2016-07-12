@@ -63,22 +63,110 @@ public class ImageDisplay extends JFrame {
 			
 			ArrayList<File> images = new ArrayList<File>(Arrays.asList(f.listFiles()));
 			
-			for (File f : images){
-				try {
-		          	BufferedImage img = ImageIO.read(f);
-		          	//ImageIcon icon = new ImageIcon(img);
-		          	//JLabel label = new JLabel(icon);
-		          	//JOptionPane.showMessageDialog(null, label);
-		          	//contentPane.add(label);
-		          	BackgroundPanel bp = new BackgroundPanel(img);
-		          	contentPane.add(bp);
-		          	
-		       	} catch (IOException e) {
-		    	   e.printStackTrace();
-		       	}
-		
+			int cols = images.size()/rows;
+			
+			BackgroundPanel[][] grid = new BackgroundPanel[rows][cols];
+			
+			for (int i = 0; i < rows; i++){
+				for (int j = 0; j < cols; j++){
+			        BufferedImage img = null;
+			        try {
+			             File f = new File("niceDroneVector.jpg");
+			             img = ImageIO.read(f);
+			             grid[i][j] = new BackgroundPanel(img);
+			        } catch (Exception e) {
+			            System.out.println("Cannot read file: " + e);
+			        }
+				}
+			}
+			
+			DroneSort(grid, images, rows, cols);
+			
+			//goes through the panels in grid and adds them into the content pane
+			for (int i = 0; i < rows; i++){
+				for (int j = 0; j < cols; j++){
+					contentPane.add(grid[i][j]);
+				}
 			}
 		}
 	}
-
+	
+	private void DroneSort(BackgroundPanel[][] grid, ArrayList<File> images, int rows, int cols){
+		int current = rows-1;
+		int x = 0;
+		int y = 0;
+		
+		boolean first = true;
+		boolean right = true;
+		boolean down  = true;
+		
+		putImage(grid, images.get(current), x, y);
+		
+		for (int i = 0; i < (images.size()-1); i++){
+			if (first){
+				if (y < (rows-1)){
+					y++;
+					current--;
+					putImage(grid, images.get(current), x, y);
+					System.out.println(current);
+				}
+				else {
+					first = false;
+					current = rows-1;
+					y = 0;
+					i--;
+				}
+			}
+			
+			else if (right){
+				if (x < cols-1){
+					current++;
+					x++;
+					putImage(grid, images.get(current), x, y);
+					right = false;
+				}
+			}
+			
+			else if(down){
+				if (y < rows-1){
+					current++;
+					y++;
+					putImage(grid, images.get(current),x,y);
+				}
+				else{
+					down = false;
+					right = true;
+					i--;
+				}
+			}
+			
+			else /*up*/{
+				if(y > 0){
+					current++;
+					y--;
+					putImage(grid, images.get(current),x,y);
+				}
+				else{
+					down = true;
+					right = true;
+					i--;
+				}
+			}
+		}
+	}
+	
+	//places an image into the cell x,y on grid
+	private void putImage(BackgroundPanel[][] grid, File f, int x, int y){
+        BufferedImage img = null;
+        try {
+             
+        	img = ImageIO.read(f);
+            grid[y][x] = new BackgroundPanel(img);
+             
+        } catch (Exception e) {
+            
+        	System.out.println("Cannot read file: " + e);
+        	
+        }
+	}
 }
