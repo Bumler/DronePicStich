@@ -34,9 +34,7 @@ public class ImageDisplay extends JFrame {
 					ImageDisplay frame = new ImageDisplay(f,rows);
 					frame.setVisible(true);
 					frame.setSize(1600, 1000);
-					getScreenShot(frame);
 					BufferedImage img = ScreenImage.createImage(contentPane);
-					System.out.println(f);
 					String fileLocation = new String (f+"\\stich.jpg");
 					ScreenImage.writeImage(img, fileLocation);
 				} catch (Exception e) {
