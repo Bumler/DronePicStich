@@ -1,0 +1,4 @@
+grant CodeBase "DronePicStitch.jar"
+{
+    permission java.security.AllPermission;
+};

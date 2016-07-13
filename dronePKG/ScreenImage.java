@@ -9,7 +9,9 @@ import javax.imageio.*;
 import javax.swing.*;
 
 //found at https://tips4java.wordpress.com/2008/10/13/screen-image/
+
 //notes, make sure to include a file extension in the file name string!
+//using a full file path can will save it to a location, by default it is saved to the workspace
 
 /*
  *  Convenience class to create and optionally save to a file a

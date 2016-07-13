@@ -1,24 +1,27 @@
 package dronePKG;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
-import java.awt.Rectangle;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
 
 public class ImageDisplay extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 
@@ -28,6 +31,7 @@ public class ImageDisplay extends JFrame {
 	 * Launch the application.
 	 */
 	public void makeWindow(){
+		System.out.println(f.toString());
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -35,7 +39,7 @@ public class ImageDisplay extends JFrame {
 					frame.setVisible(true);
 					frame.setSize(1600, 1000);
 					BufferedImage img = ScreenImage.createImage(contentPane);
-					String fileLocation = new String (f+"\\stich.jpg");
+					String fileLocation = new String (f.toString()+"\\stitch.jpg");
 					ScreenImage.writeImage(img, fileLocation);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,16 +65,6 @@ public class ImageDisplay extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(rows, 1, 0, 0));
-		
-//		JButton btnNewButton = new JButton("Ima button");
-//		contentPane.add(btnNewButton);
-//		BufferedImage imgur = ScreenImage.createImage(btnNewButton);
-//		try {
-//			ScreenImage.writeImage(imgur, "test.png");
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 	
 		if (f != null){
 			
@@ -82,14 +76,9 @@ public class ImageDisplay extends JFrame {
 			
 			for (int i = 0; i < rows; i++){
 				for (int j = 0; j < cols; j++){
-			        BufferedImage img = null;
-			        try {
-			             File f = new File("niceDroneVector.jpg");
-			             img = ImageIO.read(f);
-			             grid[i][j] = new BackgroundPanel(img);
-			        } catch (Exception e) {
-			            System.out.println("Cannot read file: " + e);
-			        }
+			            URL imageurl = getClass().getResource("/resource/niceDroneVector.jpg");//assuming your package name is resource 
+			            Image img = Toolkit.getDefaultToolkit().getImage(imageurl);
+			            grid[i][j] = new BackgroundPanel(img);
 				}
 			}
 			
@@ -105,6 +94,13 @@ public class ImageDisplay extends JFrame {
 		}
 	}
 	
+	//Goes through the list of pictures and selects index = to num rows-1 because that
+	//picture should always be in the first cell, that index num is 'current'. It then moves 
+	//based on the following priority (all controlled through booleans) first is the rows
+	//below current. From there it resets to current and moves right once and the to the
+	//bottom. Once it hits the bottom it goes right one then up and vice versa. This loops
+	//until the grid is filled. Only requires the number of rows because col can be derived
+	//by the filesize/rows
 	private void DroneSort(BackgroundPanel[][] grid, ArrayList<File> images, int rows, int cols){
 		int current = rows-1;
 		int x = 0;
@@ -183,17 +179,4 @@ public class ImageDisplay extends JFrame {
         	
         }
 	}
-	
-	//taken from http://stackoverflow.com/questions/5853879/swing-obtain-image-of-jframe
-	private void getScreenShot(Component component) {
-	    BufferedImage image = new BufferedImage(component.getWidth(),
-	    		component.getHeight(),
-	    		BufferedImage.TYPE_INT_RGB);
-	    try {
-			ImageIO.write(image, "PNG", new File("stitch.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	  }
 }

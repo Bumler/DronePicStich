@@ -2,7 +2,6 @@ package dronePKG;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,18 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
 
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -32,10 +28,13 @@ import java.awt.Font;
 
 public class Frame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private BackgroundPanel contentPane;
 	private JButton stitch;
 	private JPanel bufferNorth;
-	private JPanel panel_1;
 	private JPanel bufferSouth;
 	private JPanel bufferWest;
 	private JPanel bufferEast;
@@ -83,18 +82,12 @@ public class Frame extends JFrame {
 	public Frame() throws IOException {
 		//Reads in the background image and creates a background panel
 		//Background panel is a child of jpanel
-//        BufferedImage img = null;
-//        try {
-//            File f = new File(IOUtils.toString(classLoader.getResourceAsStream("/res/niceDroneVector")));
-//             img = ImageIO.read(f);
-//             System.out.println("File " + f.toString());
-//        } catch (Exception e) {
-//            System.out.println("Cannot read file: " + e);
-//        }
 		
-        URL imageurl = getClass().getResource("/resource/niceDroneVector.jpg");//assuming your package name is vector 
+		//gets the image from the resource package
+        URL imageurl = getClass().getResource("/resource/niceDroneVector.jpg");//assuming your package name is resource 
         Image img = Toolkit.getDefaultToolkit().getImage(imageurl);
          
+        //sets the background panel to the image
         BackgroundPanel background = new BackgroundPanel(img);
 
         //Content Pane takes a jpanel as an argument so we make it background-
@@ -131,7 +124,7 @@ public class Frame extends JFrame {
 				//opens the file explorer and sets f = to the directory chosen
 				openDirectory();
 				if (open){
-					setFileDia(f.getName());
+					setFileDia(f.toString());
 					enableRow();
 				}
 				
